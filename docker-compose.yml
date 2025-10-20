@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  webflux-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: 02-angie-chacon:1.0
+    container_name: webflux-ai-container
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://angiechacon:71491875@cluster0.nuwkm.mongodb.net/webflux-ai?retryWrites=true&w=majority&appName=Cluster0
+      - SPRING_DATA_MONGODB_DATABASE=webflux-ai
+      - AI_APIS_LANGUAGE_IDENTIFY_API_KEY=7eed17039dmsh63431ac43f3bab8p1c600cjsn1eee5acffea8
+      - AI_APIS_JSEARCH_API_KEY=7eed17039dmsh63431ac43f3bab8p1c600cjsn1eee5acffea8
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - webflux-network
+
+networks:
+  webflux-network:
+    driver: bridge

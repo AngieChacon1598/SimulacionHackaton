@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angie-chacon-deployment
+  namespace: angie-chacon-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webflux-ai
+  template:
+    metadata:
+      labels:
+        app: webflux-ai
+    spec:
+      containers:
+      - name: webflux-ai
+        image: 02-angie-chacon:1.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATA_MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: angie-chacon-secret
+              key: mongodb-uri
+        - name: AI_APIS_LANGUAGE_IDENTIFY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: angie-chacon-secret
+              key: language-api-key
+        - name: AI_APIS_JSEARCH_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: angie-chacon-secret
+              key: jsearch-api-key

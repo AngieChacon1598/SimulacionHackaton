@@ -1,0 +1,56 @@
+server:
+  port: ${PORT:8088}  
+  url: ${SERVER_URL:http://localhost:8088} 
+
+spring:
+  application:
+    name: webflux-ai
+  
+  data:
+    mongodb:
+      uri: mongodb+srv://angiechacon:71491875@cluster0.nuwkm.mongodb.net/webflux-ai?retryWrites=true&w=majority&appName=Cluster0
+      database: webflux-ai
+      auto-index-creation: true
+  
+ai:
+  apis:
+    language-identify:
+      base-url: https://language-identify-detector.p.rapidapi.com
+      api-key: 7eed17039dmsh63431ac43f3bab8p1c600cjsn1eee5acffea8
+      api-host: language-identify-detector.p.rapidapi.com
+    jsearch:
+      base-url: https://jsearch.p.rapidapi.com
+      api-key: 7eed17039dmsh63431ac43f3bab8p1c600cjsn1eee5acffea8
+      api-host: jsearch.p.rapidapi.com
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.springframework.r2dbc: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
+    com.vallegrande: DEBUG
+    reactor: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html

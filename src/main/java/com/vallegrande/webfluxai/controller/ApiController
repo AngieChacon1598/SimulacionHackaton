@@ -1,0 +1,36 @@
+package com.vallegrande.webfluxai.controller;
+
+import com.vallegrande.webfluxai.model.Product;
+import com.vallegrande.webfluxai.model.User;
+import com.vallegrande.webfluxai.repository.ProductRepository;
+import com.vallegrande.webfluxai.repository.UserRepository;
+import com.vallegrande.webfluxai.service.LanguageService;
+import com.vallegrande.webfluxai.service.SearchService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
+public class ApiController {
+
+    private final LanguageService languageService;
+    private final SearchService searchService;
+
+
+    // API IA: detección de idioma
+    @PostMapping("/detect-language")
+    public Mono<Map> detect(@RequestBody Map<String, String> body) {
+        return languageService.detectLanguage(body.get("text"));
+    }
+
+    // API IA: búsqueda de empleos
+    @GetMapping("/search")
+    public Mono<Map> search(@RequestParam String q) {
+        return searchService.searchJobs(q);
+    }
+}
